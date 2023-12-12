@@ -1,5 +1,7 @@
 package ch.bbzsogr.todo.configuration;
 
+import ch.bbzsogr.todo.authentication.JWTAuthenticationFilter;
+import ch.bbzsogr.todo.service.JWTService;
 import ch.bbzsogr.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
@@ -25,8 +28,11 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 public class SecurityConfiguration {
     @Autowired
     private UserService userService;
+    @Autowired
+    private JWTAuthenticationFilter jwtAuthenticationFilter;
     @Value("${bcrypt.strength}")
     private int strength;
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -63,9 +69,8 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider());
-        // TODO: Add jwtAuthorizationFilter
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-
     }
 }
