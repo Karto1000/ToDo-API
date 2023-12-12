@@ -2,9 +2,11 @@ package ch.bbzsogr.todo.controller;
 
 import ch.bbzsogr.todo.authentication.*;
 import ch.bbzsogr.todo.model.User;
+import ch.bbzsogr.todo.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +26,7 @@ public class AuthenticationController {
     public ResponseEntity<String> login(@Validated @RequestBody LoginRequestDao loginRequestDao) {
         try {
             return new ResponseEntity<>(authenticationService.login(loginRequestDao), HttpStatus.OK);
-        } catch (UserNotFoundException | InvalidPasswordException e) {
+        } catch (AuthenticationException e) {
             return new ResponseEntity<>("", HttpStatus.FORBIDDEN);
         }
     }
