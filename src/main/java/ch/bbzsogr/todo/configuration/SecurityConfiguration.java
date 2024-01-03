@@ -1,7 +1,6 @@
 package ch.bbzsogr.todo.configuration;
 
 import ch.bbzsogr.todo.authentication.JWTAuthenticationFilter;
-import ch.bbzsogr.todo.service.JWTService;
 import ch.bbzsogr.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

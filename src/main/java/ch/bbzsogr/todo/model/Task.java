@@ -1,5 +1,6 @@
 package ch.bbzsogr.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +16,7 @@ public class Task {
     private String title;
     private String description;
     private boolean completed;
+
+    @Column(name = "created_by", updatable = false)
+    private int createdBy;
 }

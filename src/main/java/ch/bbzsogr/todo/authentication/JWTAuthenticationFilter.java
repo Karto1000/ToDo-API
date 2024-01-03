@@ -40,7 +40,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String subject = jwtService.extractClaims(jwt, Claims::getSubject);
+        String subject = jwtService.extractClaims(jwt, claims -> String.valueOf(claims.get("id")));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 subject,
