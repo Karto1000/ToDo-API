@@ -6,6 +6,7 @@ import ch.bbzsogr.todo.model.User;
 import ch.bbzsogr.todo.service.AuthenticationService;
 import ch.bbzsogr.todo.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -27,7 +28,14 @@ public class AuthenticationController {
 
     @PostMapping(value = "/register", consumes = "application/json")
     public ResponseEntity<String> register(@Validated @RequestBody RegisterRequestDao registerRequestDao) {
-        authenticationService.register(registerRequestDao);
+        try {
+            authenticationService.register(registerRequestDao);
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>("Email Is already Used", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to create User", HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
@@ -41,7 +49,7 @@ public class AuthenticationController {
             response.put("token", token);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            return new ResponseEntity<>("Forbidden", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Email or Password is not Valid", HttpStatus.FORBIDDEN);
         }
     }
 }
