@@ -15,8 +15,8 @@ public class Task {
     @Column(name = "task_id")
     private int taskId;
 
-    @NotBlank(message = "Title cannot be blank")
-    @NotNull(message = "Title must be sent")
+    @NotBlank(message = "title cannot be blank")
+    @NotNull(message = "title must be sent")
     private String title;
     private String description;
     private boolean completed;

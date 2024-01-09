@@ -9,12 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginRequestDao {
-    @NotNull(message = "Email must be sent")
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Email must be valid")
+    @NotNull(message = "email must be sent")
+    @NotBlank(message = "email cannot be blank")
+    @Email(message = "email must be valid")
     private String email;
 
-    @NotNull(message = "Password must be sent")
-    @NotBlank(message = "Password cannot be blank")
+    @NotNull(message = "password must be sent")
+    @NotBlank(message = "password cannot be blank")
     private String password;
 }

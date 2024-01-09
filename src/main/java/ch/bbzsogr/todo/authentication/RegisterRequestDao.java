@@ -9,24 +9,24 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterRequestDao {
-    @NotNull(message = "Firstname must be sent")
-    @NotBlank(message = "Firstname cannot be blank")
+    @NotNull(message = "firstname must be sent")
+    @NotBlank(message = "firstname cannot be blank")
     private String firstname;
 
-    @NotNull(message = "Lastname must be sent")
-    @NotBlank(message = "Lastname cannot be blank")
+    @NotNull(message = "lastname must be sent")
+    @NotBlank(message = "lastname cannot be blank")
     private String lastname;
 
-    @NotNull(message = "Email cannot be empty")
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Email must be valid")
+    @NotNull(message = "email cannot be empty")
+    @NotBlank(message = "email cannot be blank")
+    @Email(message = "email must be valid")
     private String email;
 
-    @NotNull(message = "Password must be sent")
-    @NotBlank(message = "Password cannot be blank")
+    @NotNull(message = "password must be sent")
+    @NotBlank(message = "password cannot be blank")
     private String password;
 
-    @NotNull(message = "Repeated Password must be sent")
-    @NotBlank(message = "Repeated Password cannot be blank")
+    @NotNull(message = "repeatedPassword must be sent")
+    @NotBlank(message = "repeatedPassword cannot be blank")
     private String repeatedPassword;
 }
