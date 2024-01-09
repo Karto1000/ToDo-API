@@ -1,13 +1,13 @@
 package ch.bbzsogr.todo.controller;
 
+import ch.bbzsogr.todo.exceptions.RouteException;
 import ch.bbzsogr.todo.model.Task;
 import ch.bbzsogr.todo.repository.TaskRepository;
-import ch.bbzsogr.todo.service.JWTService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,30 +21,31 @@ public class TaskController {
     private TaskRepository taskRepository;
 
     @GetMapping("/get/all")
-    public ResponseEntity<?> getAllTasks() {
+    public ResponseEntity<Iterable<Task>> getAllTasks() {
         int user_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return new ResponseEntity<>(taskRepository.getByCreatedBy(user_id), HttpStatus.OK);
     }
 
     @GetMapping("/get/pending")
-    public ResponseEntity<?> getPendingTasks() {
+    public ResponseEntity<Iterable<Task>> getPendingTasks() {
         int user_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return new ResponseEntity<>(taskRepository.getByCompleted(user_id, false), HttpStatus.OK);
     }
 
     @GetMapping("/get/{taskId}")
-    public ResponseEntity<?> getTaskById(@PathVariable Integer taskId) {
+    public ResponseEntity<?> getTaskById(@PathVariable Integer taskId) throws RouteException {
         int user_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 
         Optional<Task> optionalTask = taskRepository.getById(taskId, user_id);
 
-        if (optionalTask.isEmpty()) return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        if (optionalTask.isEmpty())
+            throw new RouteException(String.format("Task %s does not exist", taskId), HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(optionalTask.get(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/add", consumes = "application/json")
-    public ResponseEntity<?> addTask(@RequestBody Task task) {
+    public ResponseEntity<Iterable<Task>> addTask(@RequestBody @Valid Task task) {
         int user_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         task.setCreatedBy(user_id);
 
@@ -53,10 +54,10 @@ public class TaskController {
     }
 
     @PutMapping(value = "/update", consumes = "application/json")
-    public ResponseEntity<?> updateTask(@RequestBody Task task) {
+    public ResponseEntity<Iterable<Task>> updateTask(@RequestBody @Valid Task task) throws RouteException {
         int user_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 
-        if (taskRepository.findById(task.getTaskId()).isEmpty()) return new ResponseEntity<>(
+        if (taskRepository.findById(task.getTaskId()).isEmpty()) throw new RouteException(
                 String.format("No Task with user_id %d", task.getTaskId()),
                 HttpStatus.BAD_REQUEST
         );
@@ -66,10 +67,10 @@ public class TaskController {
     }
 
     @PutMapping("/check/{taskId}")
-    public ResponseEntity<?> checkTaskById(@PathVariable Integer taskId) {
+    public ResponseEntity<Iterable<Task>> checkTaskById(@PathVariable Integer taskId) throws RouteException {
         int user_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 
-        if (taskRepository.getById(taskId, user_id).isEmpty()) return new ResponseEntity<>(
+        if (taskRepository.getById(taskId, user_id).isEmpty()) throw new RouteException(
                 String.format("No Task with id %d", taskId),
                 HttpStatus.BAD_REQUEST
         );
@@ -79,10 +80,10 @@ public class TaskController {
     }
 
     @PutMapping(value = "/check", consumes = "application/json")
-    public ResponseEntity<?> checkTask(@RequestBody Task task) {
+    public ResponseEntity<Iterable<Task>> checkTask(@RequestBody @Valid Task task) throws RouteException {
         int user_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 
-        if (taskRepository.getById(task.getTaskId(), user_id).isEmpty()) return new ResponseEntity<>(
+        if (taskRepository.getById(task.getTaskId(), user_id).isEmpty()) throw new RouteException(
                 String.format("No Task with id %d", task.getTaskId()),
                 HttpStatus.BAD_REQUEST
         );
@@ -92,10 +93,10 @@ public class TaskController {
     }
 
     @DeleteMapping("/delete/{taskId}")
-    public ResponseEntity<?> deleteTaskById(@PathVariable Integer taskId) {
+    public ResponseEntity<Iterable<Task>> deleteTaskById(@PathVariable Integer taskId) throws RouteException {
         int user_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 
-        if (taskRepository.getById(taskId, user_id).isEmpty()) return new ResponseEntity<>(
+        if (taskRepository.getById(taskId, user_id).isEmpty()) throw new RouteException(
                 String.format("No Task with id %d", taskId),
                 HttpStatus.BAD_REQUEST
         );

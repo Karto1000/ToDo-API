@@ -1,8 +1,10 @@
 package ch.bbzsogr.todo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -13,6 +15,9 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
     private int taskId;
+
+    @NotBlank(message = "Title cannot be blank")
+    @NotNull(message = "Title cannot be empty")
     private String title;
     private String description;
     private boolean completed;

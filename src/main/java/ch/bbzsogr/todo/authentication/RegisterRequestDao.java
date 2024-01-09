@@ -2,6 +2,7 @@ package ch.bbzsogr.todo.authentication;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.NonNull;
@@ -9,20 +10,24 @@ import org.springframework.lang.NonNull;
 @Getter
 @Setter
 public class RegisterRequestDao {
-    @NonNull
-    @NotBlank
+    @NotNull(message = "firstname cannot be empty")
+    @NotBlank(message = "firstname cannot be blank")
     private String firstname;
 
-    @NonNull
-    @NotBlank
+    @NotNull(message = "lastname cannot be empty")
+    @NotBlank(message = "lastname cannot be blank")
     private String lastname;
 
-    @NonNull
-    @NotBlank
+    @NotNull(message = "email cannot be empty")
+    @NotBlank(message = "email cannot be blank")
     @Email
     private String email;
 
-    @NonNull
-    @NotBlank
+    @NotNull(message = "password name cannot be empty")
+    @NotBlank(message = "password cannot be blank")
     private String password;
+
+    @NotNull(message = "confirmation password cannot be empty")
+    @NotBlank(message = "confirmation password cannot be blank")
+    private String confirmationPassword;
 }

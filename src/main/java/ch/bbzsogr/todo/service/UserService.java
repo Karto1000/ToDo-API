@@ -19,8 +19,6 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.getUserByEmail(username);
-
-        // Can't be bothered to do a isEmpty check
-        return user.get();
+        return user.orElse(null);
     }
 }
