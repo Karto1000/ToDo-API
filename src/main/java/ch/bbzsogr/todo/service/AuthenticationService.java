@@ -12,6 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
+/**
+ * A Spring boot service which handles the Authentication of Users
+ */
 @Service
 public class AuthenticationService {
     @Autowired

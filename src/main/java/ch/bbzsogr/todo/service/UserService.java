@@ -10,13 +10,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * A User service that can fetch a user by his username
+ *
+ * <p>
+ * Note: The username referred to in the function is actually the E-Mail of the user
+ * </p>
+ */
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * Laod a user by his username
+     * Load a user by his username
      *
      * @param username The username to search for
      * @return The User represented as a UserDetails object

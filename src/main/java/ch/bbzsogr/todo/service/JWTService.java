@@ -16,6 +16,9 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * A Spring boot service which handles the generation and validation of JWT tokens
+ */
 @Service
 public class JWTService {
     @Value("${token.validation.time}")

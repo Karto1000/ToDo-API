@@ -10,8 +10,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * An ExceptionHandler which applies to every Route in every handler
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+    /**
+     * An Override of the default handleMethodArgumentNotValid function of the base Class.
+     * This function should return a more formatted version with more details
+     *
+     * @param ex      The thrown exception
+     * @param headers The headers of the response
+     * @param status  The status of the response
+     * @param request The request that is being responded to
+     * @return The formatted error response
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         StringBuilder errorMessage = new StringBuilder();

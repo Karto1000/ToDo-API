@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The DAO that is received in the register request
+ */
 @Getter
 @Setter
 public class RegisterRequestDao {
