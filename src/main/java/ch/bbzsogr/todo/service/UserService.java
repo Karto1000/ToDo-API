@@ -15,7 +15,13 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-
+    /**
+     * Laod a user by his username
+     *
+     * @param username The username to search for
+     * @return The User represented as a UserDetails object
+     * @throws UsernameNotFoundException if the user could not be found
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.getUserByEmail(username);

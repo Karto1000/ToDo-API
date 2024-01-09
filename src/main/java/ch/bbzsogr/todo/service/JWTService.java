@@ -25,6 +25,13 @@ public class JWTService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Generate a new token for the specified user
+     *
+     * @param userDetails The user details to generate a token for
+     * @return The generated JWT
+     * @throws Exception If the user could not be found
+     */
     public String generateToken(UserDetails userDetails) throws Exception {
         // Username is Email lol
         Optional<User> optionalUser = userRepository.getUserByEmail(userDetails.getUsername());
@@ -41,6 +48,12 @@ public class JWTService {
                 .compact();
     }
 
+    /**
+     * Check if a specified JWT is valid
+     *
+     * @param token The token to check
+     * @return If the token is valid
+     */
     public boolean isTokenValid(String token) {
         try {
             Jwts.parser()
@@ -54,6 +67,14 @@ public class JWTService {
         }
     }
 
+    /**
+     * Extract a variable from the JWT
+     *
+     * @param token    The token to extract the claims from
+     * @param resolver A Function converts the claim to the expected value
+     * @param <T>      The type of the value that is returned from the resolver function
+     * @return The extracted claim
+     */
     public <T> T extractClaims(String token, Function<Claims, T> resolver) {
         Claims claims = Jwts.parser()
                 .verifyWith(getShaKey())
@@ -63,6 +84,11 @@ public class JWTService {
         return resolver.apply(claims);
     }
 
+    /**
+     * Function to generate a hmacShaKey from the key application property
+     *
+     * @return The created hmacSha key
+     */
     public SecretKey getShaKey() {
         byte[] keyBytes = Decoders.BASE64.decode(key);
         return Keys.hmacShaKeyFor(keyBytes);

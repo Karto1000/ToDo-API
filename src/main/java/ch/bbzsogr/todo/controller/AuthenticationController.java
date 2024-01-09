@@ -27,15 +27,22 @@ public class AuthenticationController {
     @Autowired
     private JWTService jwtService;
 
+    /**
+     * Create a new Account with the specified email and password
+     *
+     * @param registerRequestDao The Object with which the user will be created
+     * @return A confirmation message that the user has been created
+     * @throws RouteException If the Email is already Used, or if an exception occurs while the user is being created
+     */
     @PostMapping(value = "/register", consumes = "application/json")
-    public ResponseEntity<User> register(@Valid @RequestBody RegisterRequestDao registerRequestDao) throws RouteException {
-        if (!registerRequestDao.getPassword().equals(registerRequestDao.getConfirmationPassword())) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDao registerRequestDao) throws RouteException {
+        if (!registerRequestDao.getPassword().equals(registerRequestDao.getRepeatedPassword())) {
             throw new RouteException("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
 
         try {
-            User user = authenticationService.register(registerRequestDao);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            authenticationService.register(registerRequestDao);
+            return new ResponseEntity<>("User Created", HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new RouteException("Email Is already Used", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -43,6 +50,13 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Login with the credentials of a registered user
+     *
+     * @param loginRequestDao The Object that contains the credentials to perform the login
+     * @return The generated JWT Token
+     * @throws RouteException If the email is not found or the password does not match, or if any other error occurs
+     */
     @PostMapping(value = "/login", consumes = "application/json")
     public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginRequestDao loginRequestDao) throws RouteException {
         try {

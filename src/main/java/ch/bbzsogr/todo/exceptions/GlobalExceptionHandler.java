@@ -22,6 +22,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, null, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handle all RouteExceptions that are thrown
+     *
+     * @param ex The thrown route exception
+     * @return The Json representation of the thrown ApiError
+     */
     @ExceptionHandler(value = {RouteException.class})
     public ResponseEntity<ApiError> handleApiException(RouteException ex) {
         return new ResponseEntity<>(

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -17,7 +16,7 @@ public class Task {
     private int taskId;
 
     @NotBlank(message = "Title cannot be blank")
-    @NotNull(message = "Title cannot be empty")
+    @NotNull(message = "Title must be sent")
     private String title;
     private String description;
     private boolean completed;

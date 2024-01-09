@@ -5,29 +5,28 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.lang.NonNull;
 
 @Getter
 @Setter
 public class RegisterRequestDao {
-    @NotNull(message = "firstname cannot be empty")
-    @NotBlank(message = "firstname cannot be blank")
+    @NotNull(message = "Firstname must be sent")
+    @NotBlank(message = "Firstname cannot be blank")
     private String firstname;
 
-    @NotNull(message = "lastname cannot be empty")
-    @NotBlank(message = "lastname cannot be blank")
+    @NotNull(message = "Lastname must be sent")
+    @NotBlank(message = "Lastname cannot be blank")
     private String lastname;
 
-    @NotNull(message = "email cannot be empty")
-    @NotBlank(message = "email cannot be blank")
-    @Email
+    @NotNull(message = "Email cannot be empty")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Email must be valid")
     private String email;
 
-    @NotNull(message = "password name cannot be empty")
-    @NotBlank(message = "password cannot be blank")
+    @NotNull(message = "Password must be sent")
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
-    @NotNull(message = "confirmation password cannot be empty")
-    @NotBlank(message = "confirmation password cannot be blank")
-    private String confirmationPassword;
+    @NotNull(message = "Repeated Password must be sent")
+    @NotBlank(message = "Repeated Password cannot be blank")
+    private String repeatedPassword;
 }
